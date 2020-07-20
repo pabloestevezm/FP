@@ -4,6 +4,7 @@
 -Datasets
 
 https://www.kaggle.com/amin233/forex-top-currency-pairs-20002020
+https://www.kaggle.com/timoboz/tesla-stock-data-from-2010-to-2020
 
 
 -specialized in one pair (EUR/USD)
