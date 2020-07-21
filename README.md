@@ -5,6 +5,8 @@
 
 https://www.kaggle.com/amin233/forex-top-currency-pairs-20002020
 
+https://www.kaggle.com/imetomi/eur-usd-forex-pair-historical-data-2002-2019
+
 https://www.kaggle.com/devorvant/economic-calendar
 
 https://www.kaggle.com/timoboz/tesla-stock-data-from-2010-to-2020   (the other option)(so speculative to try to get a good accuracy)
