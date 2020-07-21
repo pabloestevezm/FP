@@ -42,4 +42,4 @@ Algorithms: SVR, nearest neighbors, random forest, and more...
 weight * input (to show predictions I want to control what it's going to be more important to consider in the process of predicting future value)
 
 
-
+https://www.kaggle.com/dominikgulacsy/twitter-investor-sentiment-analysis-dataset  (to review)
