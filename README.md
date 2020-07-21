@@ -5,6 +5,8 @@
 
 https://www.kaggle.com/amin233/forex-top-currency-pairs-20002020
 
+https://www.kaggle.com/devorvant/economic-calendar
+
 https://www.kaggle.com/timoboz/tesla-stock-data-from-2010-to-2020   (the other option)(so speculative to try to get a good accuracy)
 
 https://www.kaggle.com/miguelaenlle/reuters-articles-for-3500-stocks-since-2017 (sentiment)
@@ -37,7 +39,7 @@ Algorithms: SVR, nearest neighbors, random forest, and more...
 
 - Neural nets
 
-weight * input (to show predictions I want to control what it's going to be more important to consider in the process of )
+weight * input (to show predictions I want to control what it's going to be more important to consider in the process of predicting future value)
 
 
 
