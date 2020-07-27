@@ -14,6 +14,19 @@ def red_and_ind(df):
     return df
 
 
+def get_sample(df):
+    """
+    This function to get only December 2019 sample to try season
+    """
+    df['all_dates'] = pd.to_datetime(df['DATE_TIME'])
+    df['dates'] = (df['all_dates'] > '2019-11-30 23:45:00') & (df['all_dates'] <= '2020-01-01 00:00:00')
+    df = df[df['dates'] == True]
+    df.index = pd.DatetimeIndex(df.DATE_TIME)
+    df = df.drop(columns={'DATE_TIME', 'all_dates', 'dates'})
+    return df
+
+
+
 def renaming(df, name):
     """
     This function will be useful when we concat differents DFs to help us to difference between pairs
