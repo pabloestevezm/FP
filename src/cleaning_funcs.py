@@ -44,3 +44,6 @@ def stationary_or_not(df):
     stationaryCheck = lambda X: "Not-Stationary" if adfuller(X)[1] > 0.05 else "Stationary"
     return [(col,stationaryCheck(df[col])) for col in df.columns]
 
+
+
+
