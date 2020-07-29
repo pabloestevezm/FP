@@ -16,3 +16,15 @@ def currencies_opts():
         "opt7":"AUD-USD",
     }
     return currs
+
+"""
+@app.route(f"/currencies_pairs/{currency}")
+def metrics_curr(currency):
+    
+
+
+
+
+
+
+"""

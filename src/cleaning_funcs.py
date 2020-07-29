@@ -37,13 +37,4 @@ def renaming(df, name):
     return df
 
 
-def stationary_or_not(df):
-    """
-    Apply the adfuller to compare if it's Stationary or not, to test the null hypothesis
-    """
-    stationaryCheck = lambda X: "Not-Stationary" if adfuller(X)[1] > 0.05 else "Stationary"
-    return [(col,stationaryCheck(df[col])) for col in df.columns]
-
-
-
 
