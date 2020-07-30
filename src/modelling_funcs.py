@@ -6,6 +6,10 @@ from statsmodels.tsa.ar_model import AR
 from statsmodels.tsa.arima_model import ARIMA
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
+from sklearn.preprocessing import MinMaxScaler
+import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Activation, Input, LSTM, Dense, Flatten, Conv2D, MaxPooling2D
 
 
 def stationary_or_not(df):
@@ -95,7 +99,22 @@ def modelling_ARIMA(df, name):
     return ARIMA_predictions
 
 
-
+def modelling_LSTM(df, name):
+    scaler = MinMaxScaler()
+    scaled = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
+    X = scaled.drop(f'CLOSE_{name}', axis=1)
+    y = scaled[f'CLOSE_{name}']
+    X_train, X_test = X[:int(-0.04*len(X))], X[int(-0.04*(len(X))):]
+    y_train, y_test = y[:int(-0.04*len(X))], y[int(-0.04*(len(X))):]
+    model = Sequential()
+    model.add(LSTM(20, return_sequences=True, input_shape=(X_train.shape[1],1)))
+    model.add(LSTM(10, return_sequences=True))
+    model.add(Dropout(0.2))
+    model.add(LSTM(4, return_sequences=True))
+    model.add(Dense(1, kernel_initializer='uniform', activation='relu'))
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mae', 'mse'])
+    model_LSTM = model.fit(X_train, y_train, epochs=4, batch_size=1)
+    return model_LSTM
 
 
 
@@ -109,7 +128,6 @@ def get_metrics(df, df_orig, name):
     dr = df2.index
     realidad = df2.loc[dr[:22808]]
     futuro = df2.loc[dr[22808:]]
-    print(futuro.shape)
     for col in futuro.columns:
         mse = mean_squared_error(futuro[col], df[col])
         rmse = np.sqrt(mse)
