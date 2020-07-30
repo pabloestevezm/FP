@@ -29,6 +29,29 @@ def get_sample(df, timestart, timeend):
 
 
 
+def red_dates(df, name, timestart, timeend):
+    df['dates'] = (df['DATE_TIME'] > f'{timestart}') & (df['DATE_TIME'] <= f'{timeend}')
+    df = df[df['dates'] == True]
+    df = df.drop(columns={'dates'})
+    return df
+
+
+
+def red_LSTM(df, name, timestart, timeend):
+    original_cols = ["DATE_TIME", "HIGH", "LOW", "OPEN", "CLOSE"]
+    cols_name = ["time", f"high_{name}", f"low_{name}", f"open_{name}", f"close_{name}"]
+    df['dates'] = (df['DATE_TIME'] > f'{timestart}') & (df['DATE_TIME'] <= f'{timeend}')
+    df = df[df['dates'] == True]
+    df = df.drop(columns={'dates'})
+    df.rename(columns=dict(zip(original_cols, cols_name)), inplace=True)
+    df['time'] = pd.to_datetime(df['time'], infer_datetime_format=True)
+    df.set_index("time", inplace=True)
+    df = df.reindex(columns=cols_name[1:])
+    return df
+
+
+
+
 def renaming(df, name):
     """
     This function will be useful when we concat differents DFs to help us to difference between pairs
@@ -37,4 +60,6 @@ def renaming(df, name):
     return df
 
 
-
+def renam_LSTM(df, name):
+    df = df.rename(columns={'HIGH':f'HIGH_{name}', 'LOW':f'LOW_{name}', 'OPEN':f'OPEN_{name}', 'CLOSE':f'CLOSE_{name}'})
+    return df

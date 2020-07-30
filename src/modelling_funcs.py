@@ -10,6 +10,7 @@ from sklearn.preprocessing import MinMaxScaler
 import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Input, LSTM, Dense, Flatten, Conv2D, MaxPooling2D
+from cleaning_functions import *
 
 
 def stationary_or_not(df):
@@ -99,21 +100,42 @@ def modelling_ARIMA(df, name):
     return ARIMA_predictions
 
 
-def modelling_LSTM(df, name):
+
+
+def create_dataset(df, name, look_back=10):
+    df_copy = df.copy()
+    df_copy = df_copy.drop(f'close_{name}', axis=1)
+    dataX, dataY = [], []
+    for i in range(len(df)-look_back-1):
+        a = df[i:(i+look_back)]
+        dataX.append(a)
+        #dataY.append(df.iloc[i+look_back])
+    return np.array(dataX), np.array(dataY)
+
+
+
+def modelling_LSTM(df, name, look_back=4):
+    #df2 = df.iloc[:,1:5]
     scaler = MinMaxScaler()
     scaled = pd.DataFrame(scaler.fit_transform(df), columns=df.columns)
-    X = scaled.drop(f'CLOSE_{name}', axis=1)
-    y = scaled[f'CLOSE_{name}']
-    X_train, X_test = X[:int(-0.04*len(X))], X[int(-0.04*(len(X))):]
-    y_train, y_test = y[:int(-0.04*len(X))], y[int(-0.04*(len(X))):]
+    X, y = create_dataset(scaled, name, look_back)
+    print(X.shape, X)
+    y = scaled[look_back:-1]
+    #X = scaled.drop(f'close_{name}', axis=1)
+    y = scaled[f'close_{name}']
+    SPLIT = 0.9
+    train_size = int(len(X) * SPLIT)
+    X_train = X[:train_size]
+    y_train = y[:train_size]
+    X_test = X[train_size:]
+    y_test = y[train_size:]
     model = Sequential()
-    model.add(LSTM(20, return_sequences=True, input_shape=(X_train.shape[1],1)))
+    model.add(LSTM(20, return_sequences=True, input_shape=(X.shape[1], X.shape[2])))
     model.add(LSTM(10, return_sequences=True))
     model.add(Dropout(0.2))
-    model.add(LSTM(4, return_sequences=True))
     model.add(Dense(1, kernel_initializer='uniform', activation='relu'))
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mae', 'mse'])
-    model_LSTM = model.fit(X_train, y_train, epochs=4, batch_size=1)
+    model_LSTM = model.fit(X_train, y_train, epochs=5, batch_size=1)
     return model_LSTM
 
 
@@ -138,4 +160,9 @@ def get_metrics(df, df_orig, name):
     return mse, rmse, mape, mae
     
 
-    
+  
+eur_usd = pd.read_csv('./Input/EURUSD-2000-2020-15m.csv')
+eur_usd = red_LSTM(eur_usd, 'EUR-USD', '2019-12-01 23:45:00','2020-01-01 00:00:00')
+print(eur_usd)
+a= modelling_LSTM(eur_usd, 'EUR-USD')
+
