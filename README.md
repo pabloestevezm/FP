@@ -1,47 +1,44 @@
 # FinalProject idea
 
 
--Datasets
+
+
+-Dataset
 
 https://www.kaggle.com/amin233/forex-top-currency-pairs-20002020
 
-https://www.kaggle.com/imetomi/eur-usd-forex-pair-historical-data-2002-2019
 
-https://www.kaggle.com/devorvant/economic-calendar
+-Specialized in one pair (EUR/USD) 
 
-https://www.kaggle.com/timoboz/tesla-stock-data-from-2010-to-2020   (the other option)(so speculative to try to get a good accuracy)
+## Topics
 
-https://www.kaggle.com/miguelaenlle/reuters-articles-for-3500-stocks-since-2017 (sentiment)
+-Tratamiento de los datasets
 
+-Modelos de series temporales (AR y ARIMA)
 
--specialized in one pair (EUR/USD)
+-NN modelo Long Short-Term Memory
 
+-Métricas de las predicciones de cada par respecto a cada modelo y visualización de los datos obtenidos
 
--The main idea is to operate 24 hrs monday to friday. MetaTrader? Maybe this it's impossible to do in 8 days
+Aplico los modelos respecto al precio de cierre para hacer las predicciones.
+Estas predicciones van a ser sobre el mes de Diciembre de 2019
 
-
--Sentiment Analysis (Twitter(CEOs(stocks)/Trump/forex experts, Investing, Reuters dataset when find some keywords with regex? )
-
-
--Unsupervised learning (prediction) where i can test with supervised learning. 
-
-
-Question: supposed to be something that can be running all day(forex), could be linking like in the next 15' you're going to get the new data(supervised) to keep improving?
+- Previo al análisis de los modelos autorregresivos, obtengo:
+Prueba de Dickey-Fuller (no estacionaria)
+signal-butter : filtro lowpass
 
 
-Regression
-Predicting a continuous-valued attribute associated with an object.
-
-Applications: Drug response, Stock prices.
+## Modelo AR
 
 
-Algorithms: SVR, nearest neighbors, random forest, and more...
-
-- Recommender system, based on the risk you want to assume? Low, medium, high
-
-- Neural nets
-
-weight * input (to show predictions I want to control what it's going to be more important to consider in the process of predicting future value)
+- De los valores obtenidos del signal-butter, junto con los valores del GT
+realizo las primeras predicciones con este modelo
+Realiza unas predicciones lineales X(GT) y Xf(s.butter)
 
 
-https://www.kaggle.com/dominikgulacsy/twitter-investor-sentiment-analysis-dataset  (to review)
+## Modelo ARIMA
+
+
+- Mismo planteamiento que con el modelo AR, sólo que el order(p,d,q) que
+hay que pasar al modelo me ha limitado mucho a la hora de poder cambiar las
+predicciones
